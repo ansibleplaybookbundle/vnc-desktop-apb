@@ -1,0 +1,41 @@
+- name: process deployment config
+  openshift_v1_deployment_config:
+    name: vnc-desktop
+    state: '{{ state }}'
+    namespace: '{{ namespace }}'
+    labels:
+      app: vnc-desktop
+      service: vnc-desktop
+    replicas: 1
+    selector:
+      app: vnc-desktop
+      service: vnc-desktop
+    spec_template_metadata_labels:
+      app: vnc-desktop
+      service: vnc-desktop
+    containers:
+    - env:
+      - name: VNCPASS
+        value: "{{ vncpass }}"
+      - name: DE
+        value: "{{ de }}"
+      image: docker.io/ansibleplaybookbundle/vnc-desktop:{{ _apb_plan_id }}
+      name: vnc-desktop
+      ports:
+      - container_port: 5901
+        protocol: TCP
+
+- name: process vnc-desktop service
+  k8s_v1_service:
+    name: vnc-desktop
+    namespace: '{{ namespace }}'
+    labels:
+      app: vnc-desktop
+      service: vnc-desktop
+    selector:
+      app: vnc-desktop
+      service: vnc-desktop
+    ports:
+      - name: vnc
+        port: 5901
+        target_port: 5901
