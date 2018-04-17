@@ -6,6 +6,7 @@ async: optional
 metadata:
   displayName: "VNC Desktop (APB)"
   imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/TigerVNC_logo.svg/48px-TigerVNC_logo.svg.png"
+  longDescription: This APB will run a desktop of your choice on the distribution of your choice. In addition a noVNC server will be configured so you can easily connect.
   dependencies:
   - docker.io/ansibleplaybookbundle/vnc-client:latest
   - docker.io/ansibleplaybookbundle/vnc-desktop:f28
@@ -15,6 +16,8 @@ plans:
     description: Run a desktop of your choice on Fedora 28
     free: True
     metadata: {}
+    updates_to:
+    - f27
     parameters:
     - name: vncpass
       title: VNC Password
@@ -36,6 +39,8 @@ plans:
     description: Run a Desktop of your choice on Fedora 27 
     free: True
     metadata: {}
+    updates_to:
+    - f28
     parameters: 
     - name: vncpass
       title: VNC Password
