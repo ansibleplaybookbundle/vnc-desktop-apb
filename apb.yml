@@ -29,6 +29,8 @@ plans:
       type: string
       required: true
       updatable: true
+      display_type: password
+      maxlength: 8
     - name: de
       title: Desktop Environment
       type: enum
@@ -59,6 +61,8 @@ plans:
       type: string
       required: true
       updatable: true
+      display_type: password
+      maxlength: 8
     - name: de
       title: Desktop Environment
       type: enum
