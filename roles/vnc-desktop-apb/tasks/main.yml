@@ -1,3 +1,13 @@
+- name: process vnc-desktop pvc
+  k8s_v1_persistent_volume_claim:
+    name: vnc-desktop
+    namespace: '{{ namespace }}'
+    state: "{{ state }}"
+    access_modes:
+      - ReadWriteOnce
+    resources_requests:
+      storage: 1Gi
+
 - name: process vnc-desktop deployment config
   openshift_v1_deployment_config:
     name: vnc-desktop
@@ -19,6 +29,8 @@
         value: "{{ vncpass }}"
       - name: DE
         value: "{{ de }}"
+      - name: DESHELL
+        value: "{{ deshell }}"
       - name: RESOLUTION
         value: "{{ resolution }}"
       image: docker.io/ansibleplaybookbundle/vnc-desktop:{{ _apb_plan_id }}
@@ -26,6 +38,13 @@
       ports:
       - container_port: 5901
         protocol: TCP
+      volume_mounts:
+      - mount_path: /home/vnc
+        name: vnc-desktop
+    volumes:
+    - name: vnc-desktop
+      persistent_volume_claim:
+        claim_name: vnc-desktop
 
 - name: process vnc-desktop service
   k8s_v1_service:
