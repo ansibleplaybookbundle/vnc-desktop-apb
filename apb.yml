@@ -6,6 +6,7 @@ async: optional
 metadata:
   displayName: "VNC Desktop (APB)"
   dependencies:
+  - docker.io/ansibleplaybookbundle/vnc-client:latest
   - docker.io/ansibleplaybookbundle/vnc-desktop:f28
   - docker.io/ansibleplaybookbundle/vnc-desktop:f27
 plans:
@@ -21,8 +22,15 @@ plans:
     - name: de
       title: Desktop Environment
       type: enum
-      enum: ['Cinnamon', 'fvwm', 'i3', 'KDE', 'LXDE', 'LXQt', 'MATE', 'Sugar', 'twm', 'Xfce']
+      enum: ['fvwm', 'i3', 'KDE', 'LXDE', 'LXQt', 'MATE', 'Sugar', 'twm', 'Xfce']
       default: 'Xfce'
+      updatable: true
+    - name: resolution
+      title: Desktop Resolution
+      type: enum
+      enum: ['800x600', '1024x768', '1280x1024', '1360x768', '1440x900', '1920x1080']
+      default: '1360x768'
+      updatable: true
   - name: f27
     description: Run a Desktop of your choice on Fedora 27 
     free: True
@@ -35,6 +43,12 @@ plans:
     - name: de
       title: Desktop Environment
       type: enum
-      enum: ['Cinnamon', 'fvwm', 'i3', 'KDE', 'LXDE', 'LXQt', 'MATE', 'Sugar', 'twm', 'Xfce']
+      enum: ['fvwm', 'i3', 'KDE', 'LXDE', 'LXQt', 'MATE', 'Sugar', 'twm', 'Xfce']
       default: 'Xfce'
-
+      updatable: true
+    - name: resolution
+      title: Desktop Resolution
+      type: enum
+      enum: ['800x600', '1024x768', '1280x1024', '1360x768', '1440x900', '1920x1080']
+      default: '1360x768'
+      updatable: true

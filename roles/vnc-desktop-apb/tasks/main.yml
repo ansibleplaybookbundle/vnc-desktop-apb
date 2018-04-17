@@ -1,4 +1,4 @@
-- name: process deployment config
+- name: process vnc-desktop deployment config
   openshift_v1_deployment_config:
     name: vnc-desktop
     state: '{{ state }}'
@@ -19,6 +19,8 @@
         value: "{{ vncpass }}"
       - name: DE
         value: "{{ de }}"
+      - name: RESOLUTION
+        value: "{{ resolution }}"
       image: docker.io/ansibleplaybookbundle/vnc-desktop:{{ _apb_plan_id }}
       name: vnc-desktop
       ports:
@@ -39,3 +41,54 @@
       - name: vnc
         port: 5901
         target_port: 5901
+
+- name: process vnc-client deployment config
+  openshift_v1_deployment_config:
+    name: vnc-client
+    state: '{{ state }}'
+    namespace: '{{ namespace }}'
+    labels:
+      app: vnc-desktop
+      service: vnc-client
+    replicas: 1
+    selector:
+      app: vnc-desktop
+      service: vnc-client
+    spec_template_metadata_labels:
+      app: vnc-desktop
+      service: vnc-client
+    containers:
+    - env:
+      image: docker.io/ansibleplaybookbundle/vnc-client:latest
+      name: vnc-desktop
+      ports:
+      - container_port: 6080
+        protocol: TCP
+
+- name: process vnc-client service
+  k8s_v1_service:
+    name: vnc-client
+    namespace: '{{ namespace }}'
+    labels:
+      app: vnc-desktop
+      service: vnc-client
+    selector:
+      app: vnc-desktop
+      service: vnc-client
+    ports:
+      - name: novnc
+        port: 6080
+        target_port: 6080
+
+- name: process vnc route
+  openshift_v1_route:
+    name: vnc
+    namespace: "{{ namespace }}"
+    state: "{{ state }}"
+    spec_port_target_port: 6080
+    spec_tls_termination: edge
+    spec_tls_insecure_edge_termination_policy: Redirect
+    labels:
+      app: vnc-desktop
+      service: vnc-client
+    to_name: vnc-client
