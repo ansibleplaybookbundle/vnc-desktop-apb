@@ -5,7 +5,7 @@ bindable: False
 async: optional
 metadata:
   displayName: "VNC Desktop (APB)"
-  imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a9/TigerVNC_logo.svg"
+  imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/TigerVNC_logo.svg/48px-TigerVNC_logo.svg.png"
   dependencies:
   - docker.io/ansibleplaybookbundle/vnc-client:latest
   - docker.io/ansibleplaybookbundle/vnc-desktop:f28
