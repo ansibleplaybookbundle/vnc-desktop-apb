@@ -14,14 +14,49 @@ metadata:
                    - The default Linux password is fedora.
   dependencies:
   - docker.io/ansibleplaybookbundle/vnc-client:latest
+  - docker.io/ansibleplaybookbundle/vnc-desktop:f29
   - docker.io/ansibleplaybookbundle/vnc-desktop:f28
   - docker.io/ansibleplaybookbundle/vnc-desktop:f27
 plans:
+  - name: f29
+    description: Run a desktop of your choice on Fedora 29
+    free: True
+    metadata: {}
+    updates_to:
+    - f28
+    - f27
+    parameters:
+    - name: vncpass
+      title: VNC Password
+      type: string
+      required: true
+      updatable: true
+      display_type: password
+      maxlength: 8
+    - name: de
+      title: Desktop Environment
+      type: enum
+      enum: ['fvwm', 'i3', 'KDE', 'LXDE', 'LXQt', 'MATE', 'Sugar', 'twm', 'Xfce']
+      default: 'Xfce'
+      updatable: true
+    - name: deshell
+      title: Shell
+      type: enum
+      enum: ['bash', 'csh', 'ksh', 'sh']
+      default: 'bash'
+      updatable: true
+    - name: resolution
+      title: Desktop Resolution
+      type: enum
+      enum: ['800x600', '1024x768', '1280x1024', '1360x768', '1440x900', '1920x1080']
+      default: '1360x768'
+      updatable: true
   - name: f28
     description: Run a desktop of your choice on Fedora 28
     free: True
     metadata: {}
     updates_to:
+    - f29
     - f27
     parameters:
     - name: vncpass
@@ -54,6 +89,7 @@ plans:
     free: True
     metadata: {}
     updates_to:
+    - f29
     - f28
     parameters: 
     - name: vncpass
